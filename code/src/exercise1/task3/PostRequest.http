@@ -1,0 +1,7 @@
+POST https://postman-echo.com/post
+Content-Type: application/json
+
+{
+  "key": "pe2ws23",
+  "purpose": "This is a test."
+}

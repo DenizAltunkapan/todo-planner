@@ -1,0 +1,26 @@
+# Ignore the IntelliJ IDEA project folder
+*/.idea/
+
+# Ignore the build output folder
+*/out/
+
+# Ignore compiled bytecode for Java
+*.class
+
+# Ignore log files
+*.log
+
+# Ignore OS-specific files
+*.DS_Store
+*Thumbs.db
+
+# Ignore IDE-specific configuration files
+*.iml
+*.ipr
+*.iws
+*.project
+*.classpath
+
+# Ignore Maven and Gradle specific files
+*/target/
+*/build/
