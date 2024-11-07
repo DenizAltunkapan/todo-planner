@@ -1,8 +1,8 @@
-# Ignore the IntelliJ IDEA project folder
-*/.idea/
+# Ignore all IntelliJ IDEA project folders
+**/.idea/
 
-# Ignore the build output folder
-*/out/
+# Ignore all build output folders named 'out'
+**/out/
 
 # Ignore compiled bytecode for Java
 *.class
@@ -22,5 +22,5 @@
 *.classpath
 
 # Ignore Maven and Gradle specific files
-*/target/
-*/build/
+**/target/
+**/build/

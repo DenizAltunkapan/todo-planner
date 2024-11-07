@@ -4,7 +4,6 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.support.ConnectionSource;
-
 import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
@@ -13,6 +12,7 @@ import java.util.logging.Logger;
 public class DBManager {
     private static Logger LOGGER = Logger.getLogger(DBManager.class.getName());
     private static Dao<Letter, Integer> letterDao;
+    private static ConnectionSource connectionSource;
 
     public static void main(String[] args) {
         int[] arrayIndexes = {
@@ -42,6 +42,8 @@ public class DBManager {
             System.out.println("sum: " + getSum());
             System.out.println("count: " + getEntryCount());
             System.out.println("average: " + (float)getSum()/ getEntryCount());
+
+            closeConnectionToDB();
         }
     }
 
@@ -54,8 +56,9 @@ public class DBManager {
      */
     private static boolean connectToDB(String connectionString, String user, String password) {
         try {
-            ConnectionSource connectionSource = new JdbcConnectionSource(connectionString, user, password);
+            connectionSource = new JdbcConnectionSource(connectionString, user, password);
             letterDao = DaoManager.createDao(connectionSource, Letter.class);
+            LOGGER.log(Level.INFO, "Connected to the database");
             return true;
         } catch (SQLException exception) {
             LOGGER.log(Level.SEVERE, "Error code: " + exception.getErrorCode());
@@ -67,13 +70,13 @@ public class DBManager {
     /**
      * Exercise 2.2 a)
      * build a searched word by the indeces given in the array
-     * @param indeces
+     * @param indexes
      * @return the searched word
      */
-    private static String buildWordFromIndexes(int[] indeces) {
+    private static String buildWordFromIndexes(int[] indexes) {
         String word = "";
         try {
-            for (int index: indeces) {
+            for (int index: indexes) {
                 Letter letter = letterDao.queryForId(index);
                 if (letter != null) {
                     word +=letter.getLetter();
@@ -136,6 +139,20 @@ public class DBManager {
             LOGGER.log(Level.SEVERE, "Error getting the letters: " + exception.getMessage());
         }
         return sum;
+    }
+
+    /**
+     * closes the connection to the current database
+     */
+    private static void closeConnectionToDB() {
+        if(connectionSource != null) {
+            try {
+                connectionSource.close();
+                LOGGER.log(Level.INFO, "Closed Connection to the database");
+            } catch (Exception exception) {
+                LOGGER.log(Level.SEVERE, "Error message: " + exception.getMessage());
+            }
+        }
     }
 
 }
