@@ -1,19 +1,29 @@
-# Programmentwicklung 2 - Abgaben Repository
+# Programmentwicklung 2 - Submission Repository
 
-Dieses Repository enthält die Abgaben für den Kurs *Programmentwicklung 2*. Die Aufgabenblätter und der Code zu den Übungen sind wie folgt organisiert:
+This repository contains the submissions for the course *Programmentwicklung 2*. The assignment sheets and the code for the exercises are organized as follows:
 
-## Verzeichnisstruktur
+## Directory Structure
 
 - **/docs**  
-  Enthält die Aufgabenblätter und zugehörige Dokumentation im Ordner `/docs`.
+  Contains the assignment sheets and related documentation in the `/docs` folder.
 
-- **/code**  
-  Der Code zu den Übungen befindet sich im Ordner `/code`, wobei jede Übung ihren eigenen Unterordner hat.
+- **/api**  
+  The backend is located in the `/api` folder. For more details, see: [API](api/README.md)
 
-## Studentische Daten
+- **/frontend**  
+  The frontend is located in the `/frontend` folder. For more details, see: [Frontend](frontend/README.md)
+
+## How to Use the App
+
+1. Clone this repository.
+2. Install a JDK of at least version 21. Make sure Maven is installed. Install Node.js and ensure its root folder is added to your PATH.
+3. Start the API by navigating to the backend folder and executing `mvn spring-boot:run`.
+4. Then, start the frontend by navigating to its folder and running:
+    - `npm install`
+    - `npm run dev`
+
+## Student Information
 
 - **Name**: Deniz Altunkapan  
-- **Matrikelnummer**: 3721629
-- **E-Mail**: st187784@stud.uni-stuttgart.de
-
-
+- **Matriculation Number**: 3721629  
+- **Email**: st187784@stud.uni-stuttgart.de

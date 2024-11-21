@@ -21,6 +21,31 @@
 *.project
 *.classpath
 
-# Ignore Maven and Gradle specific files
+# Ignore Maven specific files
 **/target/
+**/.mvn/
+
+# Ignore Gradle specific files (if applicable)
 **/build/
+
+# Ignore Node.js specific folders (if applicable)
+**/node_modules/
+**/dist/
+
+# Ignore temporary or system files
+*.tmp
+*.bak
+*.swp
+
+# Ignore user-specific config files
+*.env
+*.local
+
+# Keep Docker and related configuration
+!.dockerignore
+!docker-compose.yml
+!Dockerfile
+
+# Ignore all other build artifacts
+**/bin/
+**/obj/
