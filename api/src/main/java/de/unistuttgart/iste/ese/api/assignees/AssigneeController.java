@@ -3,6 +3,7 @@ package de.unistuttgart.iste.ese.api.assignees;
 import de.unistuttgart.iste.ese.api.ApiVersion1;
 import de.unistuttgart.iste.ese.api.todos.Todo;
 import de.unistuttgart.iste.ese.api.todos.TodoRepository;
+import jakarta.annotation.PostConstruct;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,14 +26,14 @@ public class AssigneeController {
     @Autowired
     private TodoRepository todoRepository;
 
-//    @PostConstruct
-//    public void init() {
-//        long numberOfAssignees = assigneeRepository.count();
-//        if(numberOfAssignees==0){
-//            Assignee assignee = new Assignee("Ana Cristina", "Franco da Silva", "ana-cristina.franco-da-silva@iste.uni-stuttgart.de");
-//            assigneeRepository.save(assignee);
-//        }
-//    }
+    @PostConstruct
+    public void init() {
+        long numberOfAssignees = assigneeRepository.count();
+        if(numberOfAssignees==0){
+            Assignee assignee = new Assignee("Ana Cristina", "Franco da Silva", "ana-cristina.franco-da-silva@iste.uni-stuttgart.de");
+            assigneeRepository.save(assignee);
+        }
+    }
 
     @PostMapping("/assignees")
     @ResponseStatus(HttpStatus.CREATED)

@@ -1,3 +1,6 @@
+# Ignore docs folder containing prev. exercises
+**/.docs/
+
 # Ignore all IntelliJ IDEA project folders
 **/.idea/
 

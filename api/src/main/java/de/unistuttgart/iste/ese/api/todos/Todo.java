@@ -85,6 +85,7 @@ public class Todo {
 
     public void setFinished(boolean finished) {
         if(finished) this.finishedDate = new Date();
+        else this.finishedDate = null;
         this.finished = finished;
     }
 

@@ -1,0 +1,65 @@
+.input-group {
+  margin-bottom: 15px;
+}
+
+textarea,
+.input-field,
+.textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #444;
+  border-radius: 4px;
+  font-size: 16px;
+  background-color: #333;
+  color: white;
+}
+
+.input-group-checkbox {
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+}
+
+.checkbox-input {
+  margin-right: 10px;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.go-back-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #7d1e01;
+  color: white;
+  transition: transform 0.2s ease-in-out;
+}
+
+.go-back-btn:hover {
+  transform: scale(1.05);
+}
+
+.assignee-list {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.assignee-item {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+}
+
+.assignee-item span {
+  margin-right: 10px;
+}

@@ -1,33 +1,6 @@
-<script setup lang="ts">
-import {RouterView} from 'vue-router'
-import {Close, Header, HeaderNav, HeaderNavItem, Toast, Toasts} from "agnostic-vue";
-import {activeToasts} from "@/ts/toasts";
-
-import 'agnostic-vue/dist/common.min.css';
-import "agnostic-vue/dist/index.css";
-</script>
-
 <template>
   <div id="app">
-    <Header isHeaderContentStart>
-      <template v-slot:headernav>
-        <HeaderNav>
-          <HeaderNavItem>
-            <RouterLink to="/">Home</RouterLink>
-          </HeaderNavItem>
-          <HeaderNavItem>
-            <RouterLink to="/about">About</RouterLink>
-          </HeaderNavItem>
-          <HeaderNavItem>
-            <RouterLink to="/cats">Cats</RouterLink>
-          </HeaderNavItem>
-        </HeaderNav>
-      </template>
-    </Header>
-
-    <div class="main">
-      <RouterView/>
-    </div>
+    <RouterView />
   </div>
 
   <Toasts vertical-position="top" horizontal-position="end">
@@ -36,7 +9,7 @@ import "agnostic-vue/dist/index.css";
         <div class="flex-fill flex flex-column">
           <div class="flex">
             <h3 class="flex-fill">{{ toast.title }}</h3>
-            <Close @click="toast.close()"/>
+            <Close @click="toast.close()" />
           </div>
           <div class="flex">
             <font-awesome-icon :icon="toast.icon" size="xl" class="mie8 pbs2"></font-awesome-icon>
@@ -46,13 +19,25 @@ import "agnostic-vue/dist/index.css";
           </div>
         </div>
       </Toast>
-      <div class="mbe14"/>
+      <div class="mbe14" />
     </template>
   </Toasts>
 </template>
 
+<script setup lang="ts">
+import { RouterView } from 'vue-router'
+import { Close, Header, HeaderNav, HeaderNavItem, Toast, Toasts } from 'agnostic-vue'
+import { activeToasts } from '@/ts/toasts'
+
+import 'agnostic-vue/dist/common.min.css'
+import 'agnostic-vue/dist/index.css'
+</script>
+
 <style scoped>
-.main {
-  padding: 10px 20px;
+#app {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 </style>

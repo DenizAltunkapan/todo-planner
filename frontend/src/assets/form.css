@@ -1,0 +1,85 @@
+.form-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #2d2d2d;
+  color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+h1 {
+  text-align: center;
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  color: #ffffff;
+  padding-top: 15px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.textarea,
+.input-group input[type='text'],
+.input-group input[type='email'],
+.input-group input[type='date'],
+.input-group input[type='time'] {
+  padding: 0.7rem;
+  background-color: #3c3c3c;
+  border: 1px solid #555;
+  border-radius: 4px;
+  color: white;
+  font-size: 1rem;
+}
+
+input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.submit-btn {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.submit-btn:hover {
+  transform: scale(1.02);
+  background-color: #0056b3;
+}
+
+.assignee-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+}
+
+.assignee-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: #3c3c3c;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.assignee-item span {
+  flex: 1;
+  word-wrap: break-word;
+}
+
+.assignee-item input[type='checkbox'] {
+  transform: scale(1.2);
+}

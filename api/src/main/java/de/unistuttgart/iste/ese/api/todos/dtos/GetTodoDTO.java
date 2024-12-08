@@ -70,6 +70,7 @@ public class GetTodoDTO {
 
     public void setFinished(boolean finished) {
         if(finished) finishedDate = new Date().getTime();
+        else finishedDate = null;
         this.finished = finished;
     }
 
