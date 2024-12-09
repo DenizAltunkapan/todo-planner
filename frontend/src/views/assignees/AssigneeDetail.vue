@@ -52,6 +52,13 @@ import { faCheck, faXmark } from '@fortawesome/free-solid-svg-icons'
 import config from '@/config'
 import '/src/assets/detail.css'
 
+defineProps({
+  id: {
+    type: String,
+    required: true
+  }
+})
+
 interface Assignee {
   id: number
   prename: string

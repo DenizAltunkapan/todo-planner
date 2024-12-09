@@ -63,6 +63,13 @@ const selectedAssignees = ref<number[]>([])
 const dueDate = ref<string>('')
 const dueTime = ref<string>('00:00')
 
+defineProps({
+  id: {
+    type: String,
+    required: true
+  }
+})
+
 async function fetchToDo() {
   try {
     const response = await fetch(`${config.apiBaseUrl}/todos/${route.params.id}`)
@@ -70,9 +77,9 @@ async function fetchToDo() {
     todo.value = data
     selectedAssignees.value = data.assigneeList.map((assignee: { id: number }) => assignee.id)
     if (data.dueDate) {
-      const dateObj = new Date(data.dueDate)
-      dueDate.value = dateObj.toISOString().split('T')[0]
-      dueTime.value = dateObj.toISOString().split('T')[1]?.slice(0, 5) || '00:00'
+      const dateObj = new Date(data.dueDate);
+      dueDate.value = dateObj.toISOString().split('T')[0];
+      dueTime.value = dateObj.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit'});
     }
   } catch (error) {
     showToast(new Toast('Error', (error as Error).message, 'error', faXmark, 5))
