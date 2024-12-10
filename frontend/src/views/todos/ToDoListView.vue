@@ -17,8 +17,8 @@
 
   <h2>Open ToDos</h2>
   <div v-if="filteredToDos.filter((todo) => !todo.finished).length === 0" class="empty-message">
-    <p>No open todos...</p>
-    <p><a href="#" @click.prevent="navigateToCreateTodo">Click here</a> to create a todo.</p>
+    <p>No open ToDos...</p>
+    <p><a href="#" @click.prevent="navigateToCreateTodo">Click here</a> to create a ToDo.</p>
   </div>
   <ul class="todo-list">
     <li
@@ -126,7 +126,7 @@
     </ul>
   </details>
   <div v-else class="empty-message">
-    <p>No finished todos yet.</p>
+    <p>No finished ToDos yet.</p>
   </div>
 </template>
 
