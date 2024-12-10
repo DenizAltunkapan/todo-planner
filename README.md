@@ -4,14 +4,11 @@ This repository contains the submissions for the course *Programmentwicklung 2*.
 
 ## Directory Structure
 
-- **/docs**  
-  Contains the assignment sheets and related documentation in the `/docs` folder.
-
 - **/api**  
-  The backend is located in the `/api` folder. For more details, see: [API](api/README.md)
+  The backend is located in the `/api` folder. For more details, see: [api](api/README.md)
 
 - **/frontend**  
-  The frontend is located in the `/frontend` folder. For more details, see: [Frontend](frontend/README.md)
+  The frontend is located in the `/frontend` folder. For more details, see: [frontend](frontend/README.md)
 
 ## How to Use the App
 
