@@ -12,7 +12,7 @@ import HomePage from '@/views/HomePage.vue'
 const routes = [
   {
     path: '/',
-    redirect: '/todos' // Automatische Weiterleitung zu /todos
+    redirect: '/todos'
   },
   {
     path: '/',
