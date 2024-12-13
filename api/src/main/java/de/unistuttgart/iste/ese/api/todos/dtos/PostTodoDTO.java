@@ -24,10 +24,12 @@ public class PostTodoDTO {
     private Long createdDate;
 
     private Long dueDate;
+    
+    private String category;
 
     public PostTodoDTO(){}
     public PostTodoDTO(Long id, String title, String description, boolean finished, List<Assignee> assigneList,
-                       Long createdDate, Long dueDate) {
+                       Long createdDate, Long dueDate, String category) {
         this.id =id;
         this.title = title;
         this.description = description;
@@ -35,6 +37,7 @@ public class PostTodoDTO {
         this.assigneeList = assigneList;
         this.createdDate = createdDate;
         this.dueDate = dueDate;
+        this.category = category;
     }
 
     public Long getId() {
@@ -91,5 +94,13 @@ public class PostTodoDTO {
 
     public void setCreatedDate(Long createdDate) {
         this.createdDate = createdDate;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }

@@ -41,9 +41,11 @@ public class Todo {
     private Date dueDate;
 
     private Date finishedDate;
+    
+    private String category;
 
     public Todo(String title, String description, boolean finished, List<Assignee> assigneList,
-                Date createdDate, Date dueDate, Date finishedDate) {
+                Date createdDate, Date dueDate, Date finishedDate, String category) {
         this.title = title;
         this.description = description;
         this.finished = finished;
@@ -51,6 +53,7 @@ public class Todo {
         this.createdDate = createdDate;
         this.dueDate = dueDate;
         this.finishedDate = finishedDate;
+        this.category = category;
     }
     
     public Todo(){}
@@ -119,5 +122,17 @@ public class Todo {
 
     public void setFinishedDate(Date finishedDate) {
         this.finishedDate = finishedDate;
+    }
+
+    public void setAssigneeList(List<Assignee> assigneeList) {
+        this.assigneeList = assigneeList;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }

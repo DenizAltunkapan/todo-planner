@@ -30,6 +30,8 @@ public class TodoController {
 
     @Autowired
     private AssigneeRepository assigneeRepository;
+    
+    private TodoModel todoModel = new TodoModel("model.pmml");
 
     /**
      * Converts the provided TodoDTO into a Todo entity, including validation of assignee IDs.
@@ -45,9 +47,11 @@ public class TodoController {
         
         Date dueDate = todoDTO.getDueDate() != null ? new Date(todoDTO.getDueDate()) : null;
         
-        Todo todo = new Todo(todoDTO.getTitle(), todoDTO.getDescription(), todoDTO.isFinished(), assigneeList, new Date(), dueDate, null);
+        String category = todoModel.predictClass(todoDTO.getTitle());
+        
+        Todo todo = new Todo(todoDTO.getTitle(), todoDTO.getDescription(), todoDTO.isFinished(), assigneeList, new Date(), dueDate, null, category);
         todoRepository.save(todo);
-        PostTodoDTO response = new PostTodoDTO(todo.getId(), todoDTO.getTitle(), todoDTO.getDescription(), todoDTO.isFinished(), assigneeList, new Date().getTime(), dueDate.getTime());
+        PostTodoDTO response = new PostTodoDTO(todo.getId(), todoDTO.getTitle(), todoDTO.getDescription(), todoDTO.isFinished(), assigneeList, new Date().getTime(), dueDate.getTime(), todo.getCategory());
         return response;
     }
 
@@ -72,6 +76,7 @@ public class TodoController {
             dto.setCreatedDate(todo.getCreatedDate().getTime());
             dto.setDueDate(todo.getDueDate() != null ? todo.getDueDate().getTime() : null);
             dto.setFinishedDate(todo.getFinishedDate() != null ? todo.getFinishedDate().getTime() : null);
+            dto.setCategory(todo.getCategory());
             todoDTOs.add(dto);
         }
         return todoDTOs;
@@ -99,6 +104,7 @@ public class TodoController {
         dto.setCreatedDate(todo.getCreatedDate().getTime());
         dto.setDueDate(todo.getDueDate() != null ? todo.getDueDate().getTime() : null);
         dto.setFinishedDate(todo.getFinishedDate() != null ? todo.getFinishedDate().getTime() : null);
+        dto.setCategory(todo.getCategory());
         return dto;
     }
 
@@ -121,11 +127,14 @@ public class TodoController {
         
         Date dueDate = todoDTO.getDueDate() != null ? new Date(todoDTO.getDueDate()) : null;
         
+        String category = todoModel.predictClass(todoDTO.getTitle());
+        
         todo.setTitle(todoDTO.getTitle());
         todo.setDescription(todoDTO.getDescription());
         todo.setFinished(todoDTO.isFinished());
         todo.setAssigneList(assigneeList);
         todo.setDueDate(dueDate);
+        todo.setCategory(category);
 
         todoRepository.save(todo);
 
@@ -137,6 +146,7 @@ public class TodoController {
         dto.setAssigneeList(assigneeList);
         dto.setCreatedDate(todo.getCreatedDate().getTime());
         dto.setDueDate(todo.getDueDate() != null ? todo.getDueDate().getTime() : null);
+        dto.setCategory(todo.getCategory());
         return dto;
     }
 
