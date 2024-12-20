@@ -6,16 +6,23 @@ import de.unistuttgart.iste.ese.api.assignees.AssigneeRepository;
 import de.unistuttgart.iste.ese.api.todos.dtos.GetTodoDTO;
 import de.unistuttgart.iste.ese.api.todos.dtos.PostTodoDTO;
 import de.unistuttgart.iste.ese.api.todos.dtos.TodoDTO;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import jakarta.validation.Valid;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Handles CRUD operations for todos.
@@ -31,7 +38,7 @@ public class TodoController {
     @Autowired
     private AssigneeRepository assigneeRepository;
     
-    private TodoModel todoModel = new TodoModel("model.pmml");
+    private final TodoModel todoModel = new TodoModel("model.pmml");
 
     /**
      * Converts the provided TodoDTO into a Todo entity, including validation of assignee IDs.
@@ -184,5 +191,72 @@ public class TodoController {
         }
         return assignees;
     }
+
+    /**
+     * exports all Todos in a csv file
+     *
+     * Retrieves all Todos from the repository, maps them to CSV records, and streams the result to the response.
+     * @param response The HTTP response to write the CSV data to.
+     * @throws IOException If an error occurs during CSV generation.
+     */
+    @GetMapping(value = "/csv-downloads/todos", produces = "text/csv")
+    public void exportTodosToCSV(HttpServletResponse response) throws IOException {
+        response.setContentType("text/csv");
+        response.setHeader("Content-Disposition", "attachment; filename=\"todos.csv\"");
+
+        List<Todo> todos = todoRepository.findAll();
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+
+        try (PrintWriter writer = response.getWriter();
+             CSVPrinter csvPrinter = new CSVPrinter(writer,
+                 CSVFormat.DEFAULT.withHeader("id", "title", "description", "finished", "assignees", "createdDate", "dueDate", "finishedDate", "category"))) {
+
+            todos.forEach(todo -> {
+                try {
+                    csvPrinter.printRecord(mapTodoToCsvRecord(todo, dateFormatter));
+                } catch (IOException e) {
+                    throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error generating CSV file", e);
+                }
+            });
+
+            csvPrinter.flush();
+        }
+    }
     
+    /**
+     * maps the provided Todo to a CSV record.
+     *
+     * @param todo the provided Todo
+     * @param dateFormatter A SimpleDateFormat instance for formatting dates.
+     * @return A list of strings representing the CSV record.
+     */
+    private List<String> mapTodoToCsvRecord(Todo todo, SimpleDateFormat dateFormatter) {
+        String assignees = todo.getAssigneeList().stream()
+            .map(a -> a.getPrename() + " " + a.getName())
+            .collect(Collectors.joining("+"));
+
+        return List.of(
+            String.valueOf(todo.getId()),
+            todo.getTitle(),
+            todo.getDescription(),
+            String.valueOf(todo.isFinished()),
+            assignees,
+            formatOrEmpty(todo.getCreatedDate(), dateFormatter),
+            formatOrEmpty(todo.getDueDate(), dateFormatter),
+            formatOrEmpty(todo.getFinishedDate(), dateFormatter),
+            todo.getCategory()
+        );
+    }
+
+    /**
+     * Formats a date or returns an empty string if the date is null.
+     *
+     * @param date The date to format.
+     * @param formatter The formatter to use.
+     * @return A formatted date string or an empty string if the date is null.
+     */
+    private String formatOrEmpty(Date date, SimpleDateFormat formatter) {
+        return date != null ? formatter.format(date) : "";
+    }
+
 }
