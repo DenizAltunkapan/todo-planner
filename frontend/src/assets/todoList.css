@@ -182,7 +182,7 @@
 }
 
 .assignee-item:hover {
-  background-color: #5280ff;
+  background-color: #007bff;
   cursor: pointer;
 }
 
@@ -205,4 +205,30 @@
   border-radius: 5px;
   border-color: black;
   border-width: 1px;
+}
+
+.download-btn {
+  padding: 0.5%;
+  position: fixed;
+  bottom: 2rem;
+  right: 1rem;
+  border: none;
+  border-radius: 8px;
+  background-color: #0069d9;
+  color: white;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.download-btn:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+
+.download-btn .icon {
+  margin: 5px;
 }

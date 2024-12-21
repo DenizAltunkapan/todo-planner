@@ -128,6 +128,10 @@
   <div v-else class="empty-message">
     <p>No finished ToDos yet.</p>
   </div>
+  <button class="download-btn" @click="downloadCSV">
+    <FontAwesomeIcon :icon="faDownload" class="icon" />  Download CSV
+  </button>
+
 </template>
 
 <script setup lang="ts">
@@ -135,9 +139,10 @@ import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { showToast, Toast } from '@/ts/toasts'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { faCheck, faXmark, faTrash, faEdit } from '@fortawesome/free-solid-svg-icons'
+import { faCheck, faXmark, faTrash, faEdit, faDownload} from '@fortawesome/free-solid-svg-icons'
 import config from '@/config'
 import '/src/assets/todoList.css'
+import { saveAs } from 'file-saver';
 
 interface Assignee {
   id: number
@@ -292,4 +297,29 @@ async function confirmDelete(todo: ToDo) {
     showToast(new Toast('Error', (error as Error).message, 'error', faXmark, 5))
   }
 }
+
+async function downloadCSV() {
+  try {
+    const response = await fetch(`${config.apiBaseUrl}/csv-downloads/todos`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'text/csv' }
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to download CSV');
+    }
+
+    const currentDate = new Date().toISOString().split('T')[0];
+    const currentTime = new Date().toLocaleTimeString().replace(/:/g, '-').replace(/\s/g, '-');
+    const fileName = `todos_${currentDate}_${currentTime}.csv`;
+
+    const blob = await response.blob();
+    saveAs(blob, fileName);
+
+    showToast(new Toast('Success', 'Ready to download the CSV!', 'success', faCheck, 5));
+  } catch (error) {
+    showToast(new Toast('Error', (error as Error).message, 'error', faXmark, 5));
+  }
+}
+
 </script>
