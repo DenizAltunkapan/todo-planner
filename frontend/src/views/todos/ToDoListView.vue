@@ -4,12 +4,17 @@
   <div class="filter-container">
     <input v-model="filterTitle" placeholder="Filter by title" class="filter-input" />
     <select v-model="sortKey" class="filter-select">
-      <option value="title">Title</option>
       <option value="dueDate">Due Date</option>
+      <option value="title">Title</option>
     </select>
     <select v-model="sortDirection" class="filter-select">
       <option value="asc">Ascending</option>
       <option value="desc">Descending</option>
+    </select>
+    <select v-model="category" class="filter-select">
+      <option value="all">All</option>
+      <option value="private">Private</option>
+      <option value="work">Work</option>
     </select>
     <input v-model="filterDate" type="date" class="filter-input" placeholder="Filter by Due Date" />
     <button @click="clearFilters" class="clear-btn">Clear Filters</button>
@@ -28,10 +33,12 @@
     >
       <div class="todo-content">
         <div class="todo-header">
-          <strong>{{ todo.title }}</strong>
+          <div>
+            <strong>{{ todo.title }}</strong>
+            | {{ todo.category.charAt(0).toUpperCase() + todo.category.slice(1) }}
+          </div>
           <span class="todo-created-date"
-            >created: {{ new Date(todo.createdDate).toLocaleDateString() }}</span
-          >
+            >created: {{ new Date(todo.createdDate).toLocaleDateString() }}</span>
         </div>
         <p class="todo-description">{{ todo.description }}</p>
         <details class="assignees-details" v-if="todo.assigneeList && todo.assigneeList.length">
@@ -81,10 +88,12 @@
       >
         <div class="todo-content">
           <div class="todo-header">
-            <strong>{{ todo.title }}</strong>
-            <span class="todo-created-date"
-              >created: {{ new Date(todo.createdDate).toLocaleDateString() }}</span
-            >
+            <div>
+              <strong>{{ todo.title }}</strong>
+            |   {{ todo.category.charAt(0).toUpperCase() + todo.category.slice(1) }}
+            </div>
+          <span class="todo-created-date"
+            >created: {{ new Date(todo.createdDate).toLocaleDateString() }}</span>
           </div>
           <p class="todo-description">{{ todo.description }}</p>
           <details class="assignees-details" v-if="todo.assigneeList && todo.assigneeList.length">
@@ -160,12 +169,14 @@ interface ToDo {
   createdDate: number
   dueDate?: number
   assigneeList: Assignee[]
+  category: string
 }
 
 const todos = ref<ToDo[]>([])
 const filterTitle = ref('')
 const filterDate = ref('')
-const sortKey = ref<'title' | 'dueDate'>('title')
+const sortKey = ref<'title' | 'dueDate'>('dueDate')
+const category = ref<'all' | 'private' | 'work'>('all')
 const sortDirection = ref<'asc' | 'desc'>('asc')
 
 const router = useRouter()
@@ -232,6 +243,10 @@ const filteredToDos = computed(() => {
     )
   })
 
+  if (category.value !== 'all'){
+    filtered = filtered.filter((todo) => todo.category === category.value);
+  }
+
   return filtered
 })
 
@@ -242,8 +257,9 @@ onMounted(() => {
 function clearFilters() {
   filterTitle.value = ''
   filterDate.value = ''
-  sortKey.value = 'title'
+  sortKey.value = 'dueDate'
   sortDirection.value = 'asc'
+  category.value = 'all'
 }
 
 function navigateToDetails(id: number) {

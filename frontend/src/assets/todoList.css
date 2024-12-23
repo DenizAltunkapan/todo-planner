@@ -14,7 +14,7 @@
 }
 
 .filter-input,
-.filter-select {
+.filter-select, .clear-btn {
   padding: 0.6rem;
   font-size: 1rem;
   border: 1px solid #555;
@@ -24,7 +24,8 @@
 }
 
 .filter-input:focus,
-.filter-select:focus {
+.filter-select:focus,
+.clear-btn:focus {
   outline: none;
   border-color: #42b983;
   box-shadow: 0 0 5px rgba(66, 185, 131, 0.7);
@@ -71,7 +72,7 @@
 
 .todo-created-date {
   font-size: 0.9rem;
-  color: #bbb;
+  color: white;
 }
 
 .todo-due-date {
@@ -135,6 +136,39 @@
   transform: scale(1.05);
 }
 
+.todo-buttons-row {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.download-btn {
+  padding: 0.5%;
+  position: fixed;
+  bottom: 2rem;
+  right: 1.5rem;
+  border: none;
+  border-radius: 8px;
+  background-color: #0069d9;
+  color: white;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.download-btn:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+
+.download-btn .icon {
+  margin: 5px;
+}
+
+
 .details-btn {
   background-color: #007bff;
 }
@@ -190,45 +224,4 @@
   font-size: 1.2rem;
   color: #bbb;
   text-align: center;
-}
-
-.todo-buttons-row {
-  display: flex;
-  justify-content: flex-end;
-  gap: 1rem;
-}
-
-.clear-btn {
-  padding: 0.6rem 1rem;
-  font-size: 1rem;
-  color: white;
-  border-radius: 5px;
-  border-color: black;
-  border-width: 1px;
-}
-
-.download-btn {
-  padding: 0.5%;
-  position: fixed;
-  bottom: 2rem;
-  right: 1rem;
-  border: none;
-  border-radius: 8px;
-  background-color: #0069d9;
-  color: white;
-  font-size: 15px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-.download-btn:hover {
-  background-color: #0056b3;
-  transform: scale(1.05);
-}
-
-.download-btn .icon {
-  margin: 5px;
 }
