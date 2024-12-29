@@ -24,10 +24,10 @@ const student = reactive({
 <style scoped>
 h1 {
   text-align: center;
-  font-size: 2rem;
+  font-size: 1.8rem;
   margin-bottom: 1.5rem;
-  color: #b9b9b9;
-  font-weight: bold;
+  color: #ffffff;
+  padding-top: 15px;
 }
 
 .student-info p {

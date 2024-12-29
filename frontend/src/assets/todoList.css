@@ -14,7 +14,8 @@
 }
 
 .filter-input,
-.filter-select, .clear-btn {
+.filter-select,
+.clear-btn {
   padding: 0.6rem;
   font-size: 1rem;
   border: 1px solid #555;
@@ -149,14 +150,16 @@
   right: 1.5rem;
   border: none;
   border-radius: 8px;
-  background-color: #0069d9;
+  background-color: #007bff;
   color: white;
   font-size: 15px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    transform 0.3s ease;
 }
 
 .download-btn:hover {
@@ -167,7 +170,6 @@
 .download-btn .icon {
   margin: 5px;
 }
-
 
 .details-btn {
   background-color: #007bff;

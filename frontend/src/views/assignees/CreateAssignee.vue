@@ -62,7 +62,7 @@ function createAssignee() {
       }
       return response.json()
     })
-    .then((data) => {
+    .then(() => {
       showToast(new Toast('Success', 'Assignee successfully created!', 'success', faCheck, 5))
       assignee.value = { prename: '', name: '', email: '' }
       setTimeout(() => {
