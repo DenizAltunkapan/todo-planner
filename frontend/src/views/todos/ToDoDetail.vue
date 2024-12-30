@@ -53,7 +53,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { showToast, Toast } from '@/ts/toasts'
 import { faCheck, faXmark } from '@fortawesome/free-solid-svg-icons'
 import config from '@/config'
-import '/src/assets/detail.css'
+import '/src/assets/styling/detail.css'
 
 const route = useRoute()
 const router = useRouter()
@@ -70,6 +70,10 @@ defineProps({
   }
 })
 
+/**
+ * Fetches the ToDo item by id from the API
+ * populates the available assignees and formats the due date and time
+ */
 async function fetchToDo() {
   try {
     const response = await fetch(`${config.apiBaseUrl}/todos/${route.params.id}`)
@@ -86,6 +90,9 @@ async function fetchToDo() {
   }
 }
 
+/**
+ * Loads the list of available assignees from the API with a GET request
+ */
 async function loadAssignees() {
   try {
     const response = await fetch(`${config.apiBaseUrl}/assignees`)
@@ -96,6 +103,12 @@ async function loadAssignees() {
   }
 }
 
+/**
+ * Combines the provided date and time into a single timestamp
+ * @param date - The due date as a string (yyyy-mm-dd)
+ * @param time - The due time as a string (hh:mm).
+ * @returns A timestamp in ms, or null if the date is not provided.
+ */
 function combineDateAndTime(date: string, time: string): number | null {
   if (!date) return null
   const timeToUse = time || '00:00'
@@ -104,6 +117,9 @@ function combineDateAndTime(date: string, time: string): number | null {
   return combinedDate.getTime()
 }
 
+/**
+ * Updates the ToDo item with new values by sending a PUT request to the API
+ */
 async function updateToDo() {
   const updatedToDo = {
     ...todo.value,
@@ -126,10 +142,16 @@ async function updateToDo() {
   }
 }
 
+/**
+ * Navigates back to the previous page
+ */
 function goBack() {
   router.back()
 }
 
+/**
+ * Navigates to the create-assignee page
+ */
 function navigateToCreateAssignee() {
   router.push('/create-assignee')
 }

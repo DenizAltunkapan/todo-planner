@@ -147,81 +147,29 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { showToast, Toast } from '@/ts/toasts'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { faCheck, faXmark, faTrash, faEdit, faDownload } from '@fortawesome/free-solid-svg-icons'
-import config from '@/config'
-import '/src/assets/todoList.css'
-import { saveAs } from 'file-saver'
+import '/src/assets/styling/todoList.css'
+import {
+  toggleToDoUnfinished,
+  toggleToDoFinished,
+  confirmDelete,
+  downloadCSV,
+  fetchToDos,
+  todos
+} from '@/assets/scripts/todos-view'
 
-interface Assignee {
-  id: number
-  name: string
-  prename: string
-  email: string
-}
-
-interface ToDo {
-  id: number
-  title: string
-  description: string
-  finished: boolean
-  finishedDate?: number
-  createdDate: number
-  dueDate?: number
-  assigneeList: Assignee[]
-  category: string
-}
-
-const todos = ref<ToDo[]>([])
 const filterTitle = ref('')
 const filterDate = ref('')
 const sortKey = ref<'title' | 'dueDate'>('dueDate')
 const category = ref<'all' | 'private' | 'work'>('all')
 const sortDirection = ref<'asc' | 'desc'>('asc')
-
 const router = useRouter()
 
-async function fetchToDos() {
-  try {
-    const response = await fetch(`${config.apiBaseUrl}/todos`)
-    if (!response.ok) throw new Error('Failed to fetch ToDos')
-    todos.value = await response.json()
-  } catch (error) {
-    showToast(
-      new Toast('Error', `Could not load ToDos: ${(error as Error).message}`, 'error', faXmark, 5)
-    )
-  }
-}
-
-async function toggleToDoUnfinished(todo: ToDo) {
-  const updatedTodo = {
-    ...todo,
-    finished: false,
-    assigneeIdList: todo.assigneeList.map((a) => a.id)
-  }
-
-  try {
-    const response = await fetch(`${config.apiBaseUrl}/todos/${todo.id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(updatedTodo)
-    })
-
-    if (!response.ok) {
-      throw new Error('Failed to update ToDo')
-    }
-
-    const updatedData = await response.json()
-    Object.assign(todo, updatedData)
-    todo.finishedDate = undefined
-
-    showToast(new Toast('Success', 'ToDo marked as unfinished!', 'success', faCheck, 5))
-  } catch (error) {
-    showToast(new Toast('Error', (error as Error).message, 'error', faXmark, 5))
-  }
-}
-
+/**
+ * Computed property to filter and sort ToDos
+ * @type {import('vue').ComputedRef<ToDo[]>}
+ */
 const filteredToDos = computed(() => {
   let filtered = todos.value.filter((todo) =>
     todo.title.toLowerCase().includes(filterTitle.value.toLowerCase())
@@ -251,10 +199,9 @@ const filteredToDos = computed(() => {
   return filtered
 })
 
-onMounted(() => {
-  fetchToDos()
-})
-
+/**
+ * Clears all applied filters and resets them to their default values.
+ */
 function clearFilters() {
   filterTitle.value = ''
   filterDate.value = ''
@@ -263,79 +210,31 @@ function clearFilters() {
   category.value = 'all'
 }
 
+/**
+ * Navigates to the details page of a specific ToDo
+ * @param {number} id - The ID of the ToDo to navigate to
+ */
 function navigateToDetails(id: number) {
   router.push(`/todos/${id}`)
 }
 
+/**
+ * Navigates to the details page of a specific assignee
+ * @param {number} id - The ID of the assignee to navigate to
+ */
 function navigateToAssignee(id: number) {
   if (!id) return
   router.push(`/assignees/${id}`)
 }
 
+/**
+ * Navigates to the page for creating a new ToDo
+ */
 function navigateToCreateTodo() {
   router.push('/create-todo')
 }
 
-async function toggleToDoFinished(todo: ToDo) {
-  try {
-    const updatedTodo = {
-      ...todo,
-      finished: true,
-      assigneeIdList: todo.assigneeList.map((a) => a.id)
-    }
-    const response = await fetch(`${config.apiBaseUrl}/todos/${todo.id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(updatedTodo)
-    })
-
-    if (!response.ok) throw new Error('Failed to update ToDo')
-
-    const updatedData = await response.json()
-
-    Object.assign(todo, updatedData)
-
-    showToast(new Toast('Success', 'ToDo marked as finished!', 'success', faCheck, 5))
-  } catch (error) {
-    showToast(new Toast('Error', (error as Error).message, 'error', faXmark, 5))
-  }
-}
-
-async function confirmDelete(todo: ToDo) {
-  const confirm = window.confirm('Are you sure you want to delete this ToDo?')
-  if (!confirm) return
-
-  try {
-    const response = await fetch(`${config.apiBaseUrl}/todos/${todo.id}`, { method: 'DELETE' })
-    if (!response.ok) throw new Error('Failed to delete ToDo')
-    todos.value = todos.value.filter((t) => t.id !== todo.id)
-    showToast(new Toast('Success', 'ToDo deleted!', 'success', faCheck, 5))
-  } catch (error) {
-    showToast(new Toast('Error', (error as Error).message, 'error', faXmark, 5))
-  }
-}
-
-async function downloadCSV() {
-  try {
-    const response = await fetch(`${config.apiBaseUrl}/csv-downloads/todos`, {
-      method: 'GET',
-      headers: { 'Content-Type': 'text/csv' }
-    })
-
-    if (!response.ok) {
-      throw new Error('Failed to download CSV')
-    }
-
-    const currentDate = new Date().toISOString().split('T')[0]
-    const currentTime = new Date().toLocaleTimeString().replace(/:/g, '-').replace(/\s/g, '-')
-    const fileName = `todos_${currentDate}_${currentTime}.csv`
-
-    const blob = await response.blob()
-    saveAs(blob, fileName)
-
-    showToast(new Toast('Success', 'Ready to download the CSV!', 'success', faCheck, 5))
-  } catch (error) {
-    showToast(new Toast('Error', (error as Error).message, 'error', faXmark, 5))
-  }
-}
+onMounted(() => {
+  fetchToDos()
+})
 </script>

@@ -17,7 +17,7 @@
       <input id="name" v-model="assignee.name" type="text" placeholder="Enter name" required />
     </div>
     <div class="input-group">
-      <label for="email">Email:</label>
+      <label for="email">E-Mail:</label>
       <input id="email" v-model="assignee.email" type="email" placeholder="Enter email" required />
     </div>
 
@@ -31,7 +31,7 @@ import { showToast, Toast } from '@/ts/toasts'
 import { faCheck, faXmark } from '@fortawesome/free-solid-svg-icons'
 import config from '@/config'
 import { useRouter } from 'vue-router'
-import '/src/assets/form.css'
+import '/src/assets/styling/form.css'
 
 const router = useRouter()
 
@@ -41,6 +41,11 @@ const assignee = ref({
   email: ''
 })
 
+/**
+ * Creates a new assignee by sending a POST request to the API.
+ * Validates that all fields are filled out before sending the request.
+ * Displays a toast on success or failure, but does not throw an error
+ */
 function createAssignee() {
   if (!assignee.value.prename || !assignee.value.name || !assignee.value.email) {
     showToast(new Toast('Validation Error', 'All fields are required.', 'error', faXmark, 5))

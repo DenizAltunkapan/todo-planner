@@ -53,6 +53,10 @@ const availableAssignees = ref<Array<{ id: number; name: string; prename: string
 
 const router = useRouter()
 
+/**
+ * Fetches the list of available assignees from the API
+ * If an error occurs, a toast is displayed to notify the user
+ */
 async function loadAssignees() {
   try {
     const response = await fetch(`${config.apiBaseUrl}/assignees`)
@@ -64,6 +68,12 @@ async function loadAssignees() {
   }
 }
 
+/**
+ * Combines the provided date and time into a single timestamp
+ * @param date - The due date as a string (yyyy-mm-dd)
+ * @param time - The due time as a string (hh:mm).
+ * @returns A timestamp in ms, or null if the date is not provided.
+ */
 function combineDateAndTime(date: string, time: string): number | null {
   if (!date) return null
   const timeToUse = time || '00:00'
@@ -72,6 +82,11 @@ function combineDateAndTime(date: string, time: string): number | null {
   return combinedDate.getTime()
 }
 
+/**
+ * Creates a new ToDo by sending a POST request to the API.
+ * Validates that the title is filled in, and sets default values for other fields.
+ * Displays a toast on success or failure, and resets the form after successful creation
+ */
 function createToDo() {
   if (!title.value.trim()) {
     showToast(new Toast('Validation Error', 'Title is required.', 'error', faXmark, 5))
@@ -112,9 +127,12 @@ function createToDo() {
     .catch((error) => showToast(new Toast('Error', error.message, 'error', faXmark, 5)))
 }
 
-onMounted(loadAssignees)
-
+/**
+ * Navigates to the "CreateAssignee" page to create a new assignee.
+ */
 function navigateToCreateAssignee() {
   router.push({ name: 'CreateAssignee' })
 }
+
+onMounted(loadAssignees)
 </script>
