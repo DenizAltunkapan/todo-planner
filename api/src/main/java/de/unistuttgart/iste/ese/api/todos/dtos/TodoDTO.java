@@ -2,7 +2,6 @@ package de.unistuttgart.iste.ese.api.todos.dtos;
 
 import jakarta.validation.constraints.Size;
 import jakarta.validation.constraints.NotNull;
-
 import java.util.List;
 
 public class TodoDTO {

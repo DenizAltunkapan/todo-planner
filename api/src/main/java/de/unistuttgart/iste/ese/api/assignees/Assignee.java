@@ -6,8 +6,7 @@ import jakarta.validation.constraints.Size;
 
 /**
  * Represents an Assignee entity stored in the "assignees" table. 
- * Models a person who can be assigned to todos, with attributes like 
- * ID, name, and a validated university email address.
+ * Models a person who can be assigned to todos, with attributes like Id, name, and a validated university email address.
  */
 @Entity
 @Table(name = "assignees")

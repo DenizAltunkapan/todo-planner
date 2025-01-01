@@ -1,10 +1,8 @@
 package de.unistuttgart.iste.ese.api.todos.dtos;
 
 import de.unistuttgart.iste.ese.api.assignees.Assignee;
-
 import jakarta.validation.constraints.Size;
 import jakarta.validation.constraints.NotNull;
-
 import java.util.Date;
 import java.util.List;
 
