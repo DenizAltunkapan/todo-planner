@@ -157,7 +157,7 @@ import {
   downloadCSV,
   fetchToDos,
   todos
-} from '@/assets/scripts/todos-view'
+} from '@/ts/todos-view'
 
 const filterTitle = ref('')
 const filterDate = ref('')

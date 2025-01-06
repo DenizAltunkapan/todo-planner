@@ -8,8 +8,8 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Represents a Todo item stored in the "todos" table. 
- * Includes details like title, description, status, assignees, 
+ * Represents a Todo item stored in the "todos" table.
+ * Includes details like title, description, status, assignees,
  * and relevant timestamps (created, due, and finished dates).
  */
 @Entity
@@ -35,13 +35,13 @@ public class Todo {
         inverseJoinColumns = @JoinColumn(name = "assignee_id")
     )
     private List<Assignee> assigneeList;
-    
+
     private Date createdDate;
 
     private Date dueDate;
 
     private Date finishedDate;
-    
+
     private String category;
 
     public Todo(String title, String description, boolean finished, List<Assignee> assigneList,
@@ -55,8 +55,9 @@ public class Todo {
         this.finishedDate = finishedDate;
         this.category = category;
     }
-    
-    public Todo(){}
+
+    public Todo() {
+    }
 
     public Long getId() {
         return id;
@@ -87,7 +88,7 @@ public class Todo {
     }
 
     public void setFinished(boolean finished) {
-        if(finished) this.finishedDate = new Date();
+        if (finished) this.finishedDate = new Date();
         else this.finishedDate = null;
         this.finished = finished;
     }

@@ -1,6 +1,6 @@
 # frontend
 
-This is a ToDo planner, a single page application frontend with Vue.js v3. The UI is accessible under http://localhost:5173.
+This is a ToDo planner, a single page application frontend with Vue.js v3. The UI is accessible under http://localhost:5173 after running 'npm run dev'.
 
 ## Prerequisites
 

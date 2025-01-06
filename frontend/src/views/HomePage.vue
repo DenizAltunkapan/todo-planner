@@ -30,6 +30,8 @@ export default {
   display: flex;
   flex-direction: column;
   max-height: 100vh;
+  background-color: var(--vt-c-black-mute);
+  color: var(--vt-c-text-dark-2);
 }
 
 .content-area {
