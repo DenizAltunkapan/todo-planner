@@ -10,8 +10,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import jakarta.validation.Valid;
+
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /**
@@ -65,7 +67,7 @@ public class TodoController {
      * If the Todo exists, it is updated and returned as a GetTodoDTO.
      * If the Todo cannot be found, a 404 error is thrown.
      *
-     * @param id The ID of the Todo to update.
+     * @param id      The ID of the Todo to update.
      * @param todoDTO The updated Todo data.
      * @return A GetTodoDTO representing the updated Todo.
      * @throws ResponseStatusException If no Todo with the given ID is found.
@@ -96,11 +98,12 @@ public class TodoController {
      */
     @GetMapping(value = "/csv-downloads/todos", produces = "text/csv")
     public void exportTodosToCSV(HttpServletResponse response) throws IOException {
-        response.setContentType("text/csv");
+        response.setContentType("text/csv; charset=UTF-8");
         response.setHeader("Content-Disposition", "attachment; filename=\"todos.csv\"");
 
-        try (PrintWriter writer = response.getWriter()) {
+        try (StringWriter writer = new StringWriter()) {
             todoService.exportTodosToCSV(writer);
+            response.getOutputStream().write(writer.toString().getBytes(StandardCharsets.UTF_8));
         } catch (IOException e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error generating CSV file", e);
         }

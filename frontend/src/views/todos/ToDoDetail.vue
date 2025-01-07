@@ -82,7 +82,7 @@ async function fetchToDo() {
     selectedAssignees.value = data.assigneeList.map((assignee: { id: number }) => assignee.id)
     if (data.dueDate) {
       const dateObj = new Date(data.dueDate)
-      dueDate.value = dateObj.toISOString().split('T')[0]
+      dueDate.value = dateObj.toLocaleDateString('sv-SE')
       dueTime.value = dateObj.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' })
     }
   } catch (error) {

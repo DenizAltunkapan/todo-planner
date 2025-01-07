@@ -13,7 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.Writer;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -164,7 +164,7 @@ public class TodoService {
      * @param writer The PrintWriter to write the CSV data to.
      * @throws IOException If an error occurs during CSV generation.
      */
-    public void exportTodosToCSV(PrintWriter writer) throws IOException {
+    public void exportTodosToCSV(Writer writer) throws IOException {
         List<Todo> todos = todoRepository.findAll();
         SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
 
