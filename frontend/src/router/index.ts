@@ -5,7 +5,6 @@ import AssigneeDetailView from '@/views/assignees/AssigneeDetail.vue'
 import ToDoListView from '@/views/todos/ToDosView.vue'
 import CreateToDoView from '@/views/todos/CreateToDo.vue'
 import ToDoDetailView from '@/views/todos/ToDoDetail.vue'
-import AboutView from '@/views/AboutView.vue'
 // @ts-ignore
 import HomePage from '@/views/HomePage.vue'
 
@@ -23,8 +22,7 @@ const routes = [
       { path: 'assignees/:id', component: AssigneeDetailView, props: true },
       { path: 'todos', component: ToDoListView },
       { path: 'create-todo', component: CreateToDoView },
-      { path: 'todos/:id', component: ToDoDetailView, props: true },
-      { path: 'about', component: AboutView }
+      { path: 'todos/:id', component: ToDoDetailView, props: true }
     ]
   }
 ]

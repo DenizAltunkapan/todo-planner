@@ -14,9 +14,6 @@
         <router-link to="/create-assignee" class="menu-item">
           <span>Create Assignee</span>
         </router-link>
-        <router-link to="/about" class="menu-item">
-          <span>About</span>
-        </router-link>
       </div>
     </div>
   </div>
