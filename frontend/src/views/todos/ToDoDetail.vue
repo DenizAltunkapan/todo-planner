@@ -8,6 +8,10 @@
         <input id="title" v-model="todo.title" class="input-field" required />
       </div>
       <div class="input-group">
+        <label for="category">Category:</label>
+        <input id="category" v-model="todo.category" class="input-field" readonly disabled />
+      </div>
+      <div class="input-group">
         <label>Description:</label>
         <textarea
           v-model="todo.description"
@@ -142,6 +146,7 @@ async function updateToDo() {
       body: JSON.stringify(updatedToDo)
     })
     if (!response.ok) throw new Error('Failed to update ToDo.')
+    fetchToDo()
     showToast(new Toast('Success', 'ToDo updated!', 'success', faCheck, 5))
   } catch (error) {
     showToast(new Toast('Error', (error as Error).message, 'error', faXmark, 5))
