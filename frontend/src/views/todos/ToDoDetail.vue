@@ -8,8 +8,14 @@
         <input id="title" v-model="todo.title" class="input-field" required />
       </div>
       <div class="input-group">
-        <label for="description">Description:</label>
-        <textarea id="description" v-model="todo.description" class="input-field"></textarea>
+        <label>Description:</label>
+        <textarea
+          v-model="todo.description"
+          class="input-field"
+          placeholder="Enter a description"
+          maxlength="255"
+        ></textarea>
+        <small>{{ todo.description.length }}/255 characters</small>
       </div>
       <div class="input-group">
         <label for="dueDate">Due Date:</label>

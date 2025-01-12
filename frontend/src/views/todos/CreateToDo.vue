@@ -11,7 +11,9 @@
         v-model="description"
         class="input-field"
         placeholder="Enter a description"
+        maxlength="255"
       ></textarea>
+      <small>{{ description.length }}/255 characters</small>
     </div>
     <div class="input-group">
       <label>Due Date:</label>

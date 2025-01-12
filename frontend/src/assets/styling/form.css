@@ -26,6 +26,7 @@ h1 {
 }
 
 .textarea,
+.input-field,
 .input-group input[type='text'],
 .input-group input[type='email'],
 .input-group input[type='date'],
@@ -36,8 +37,10 @@ h1 {
   border-radius: 4px;
   color: white;
   font-size: 1rem;
+  resize: none;
 }
 
+.input-field:focus,
 input:focus {
   outline: none;
   border-color: #007bff;
