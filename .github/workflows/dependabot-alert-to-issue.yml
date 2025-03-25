@@ -1,0 +1,33 @@
+name: Dependabot Alerts to Issues
+
+on:
+  schedule:
+    - cron: '0 0 * * 0'  # Every 7 days (weekly)
+  workflow_dispatch:  # Allows for manual triggering
+
+jobs:
+  create-issue:
+    runs-on: ubuntu-latest  # Use Ubuntu for the workflow, as it's reliable.
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Get Dependabot alerts
+        uses: peter-evans/dependabot-alerts-action@v2
+        id: alerts
+
+      - name: Create Issue for new alerts
+        if: ${{ steps.alerts.outputs.alerts != '[]' }}
+        run: |
+          # Extract alert descriptions from the Dependabot alerts
+          ALERTS=$(echo "${{ steps.alerts.outputs.alerts }}" | jq -r '.[].security_advisory.description')
+          
+          # Loop through each alert and create an issue for it
+          for ALERT in $ALERTS; do
+            # Use GitHub's API to create an issue
+            curl -X POST \
+              -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+              -d '{"title": "New Dependabot Alert: '$ALERT'", "body": "This is a new alert from Dependabot: '$ALERT'. Please review and update your dependencies accordingly."}' \
+              "https://api.github.com/repos/${{ github.repository }}/issues"
+          done
