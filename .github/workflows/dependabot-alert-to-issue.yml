@@ -1,100 +1,42 @@
 name: Dependabot Alerts to Issues
 
 on:
-  schedule:
-    - cron: '0 0 * * 0'  # every sunday at midnight
   workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * 0'  # Sonntags um Mitternacht
 
 permissions:
   security-events: read
   issues: write
 
 jobs:
-  process-alerts:
+  convert-alerts:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup jq
-        run: sudo apt-get install -y jq
-
-      - name: Fetch Dependabot alerts
-        id: fetch-alerts
+      - name: Get alerts and create issues
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          response=$(curl -s \
+          # Install jq if needed
+          sudo apt-get install -y jq
+
+          # Fetch alerts
+          alerts=$(curl -s \
             -H "Authorization: token $GITHUB_TOKEN" \
             -H "Accept: application/vnd.github+json" \
-            -H "X-GitHub-Api-Version: 2022-11-28" \
             "https://api.github.com/repos/${{ github.repository }}/dependabot/alerts?state=open")
 
-          alerts=$(echo "$response" | jq -c '[.[] | {
-            title: .security_advisory.summary,
-            package: .dependency.package.name,
-            severity: .security_advisory.severity,
-            description: .security_advisory.description,
-            vulnerable_versions: .security_vulnerability.vulnerable_version_range,
-            patched_versions: .security_vulnerability.first_patched_version,
-            alert_url: .html_url
-          }]')
-
-          count=$(echo "$alerts" | jq '. | length')
-          
-          echo "count=$count" >> $GITHUB_OUTPUT
-          echo "alerts=$alerts" >> $GITHUB_OUTPUT  # alerts als JSON-Ausgabe, keine String-Konvertierung mehr
-
-          echo "Found $count alerts"
-
-      - name: Create issues
-        if: steps.fetch-alerts.outputs.count > 0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          echo "${{ steps.fetch-alerts.outputs.alerts }}" | jq -c '.[]' | while IFS= read -r alert; do
-            title=$(echo "$alert" | jq -r '.title')
-            package=$(echo "$alert" | jq -r '.package')
-            severity=$(echo "$alert" | jq -r '.severity')
-            desc=$(echo "$alert" | jq -r '.description')
-            vuln=$(echo "$alert" | jq -r '.vulnerable_versions')
-            patched=$(echo "$alert" | jq -r '.patched_versions')
-            url=$(echo "$alert" | jq -r '.alert_url')
-
-            issue_body=$(cat <<EOF
-### Dependabot Security Alert
-
-**Package:** \`$package\`  
-**Severity:** $severity  
-**Vulnerable versions:** $vuln  
-**Patched versions:** $patched
-
-**Description:**  
-$desc
-
-**Alert URL:**  
-$url
-
-**Action Required:**  
-Please either:
-1. Update to a patched version ($patched), or
-2. Implement mitigation steps
-EOF
-            )
+          echo "$alerts" | jq -c '.[]' | while read -r alert; do
+            title=$(echo "$alert" | jq -r '.security_advisory.summary')
+            package=$(echo "$alert" | jq -r '.dependency.package.name')
+            url=$(echo "$alert" | jq -r '.html_url')
 
             curl -s -X POST \
               -H "Authorization: token $GITHUB_TOKEN" \
               -H "Accept: application/vnd.github+json" \
-              -H "X-GitHub-Api-Version: 2022-11-28" \
               -d "$(jq -n \
-                --arg title "[Dependabot] $title - $package ($severity)" \
-                --arg body "$issue_body" \
-                '{title:$title, body:$body, labels:["security","dependabot"]}')" \
+                --arg title "[Dependabot] $title ($package)" \
+                --arg body "Vulnerability in $package\n\nDetails: $url" \
+                '{title:$title, body:$body}')" \
               "https://api.github.com/repos/${{ github.repository }}/issues"
-
-            sleep 1
           done
-
-      - name: No alerts found
-        if: steps.fetch-alerts.outputs.count == 0
-        run: echo "No open Dependabot alerts found. Skipping issue creation."
