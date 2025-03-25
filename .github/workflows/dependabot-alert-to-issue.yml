@@ -13,21 +13,26 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Get Dependabot alerts
-        uses: peter-evans/dependabot-alerts-action@v2
-        id: alerts
-
-      - name: Create Issue for new alerts
-        if: ${{ steps.alerts.outputs.alerts != '[]' }}
+      - name: Get Dependabot alerts via GitHub API
         run: |
-          # Extract alert descriptions from the Dependabot alerts
-          ALERTS=$(echo "${{ steps.alerts.outputs.alerts }}" | jq -r '.[].security_advisory.description')
+          # Get the list of Dependabot alerts using GitHub's API
+          response=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            "https://api.github.com/repos/DenizAltunkapan/todo-planner/dependabot/alerts")
           
+          # Extract alert descriptions from the response
+          alerts=$(echo "$response" | jq -r '.[].security_advisory.description')
+
+          # Check if there are any alerts
+          if [ -z "$alerts" ]; then
+            echo "No new Dependabot alerts found."
+            exit 0
+          fi
+
           # Loop through each alert and create an issue for it
-          for ALERT in $ALERTS; do
+          for ALERT in $alerts; do
             # Use GitHub's API to create an issue
             curl -X POST \
               -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
               -d '{"title": "New Dependabot Alert: '$ALERT'", "body": "This is a new alert from Dependabot: '$ALERT'. Please review and update your dependencies accordingly."}' \
-              "https://api.github.com/repos/${{ github.repository }}/issues"
+              "https://api.github.com/repos/DenizAltunkapan/todo-planner/issues"
           done
