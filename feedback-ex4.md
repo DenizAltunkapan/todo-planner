@@ -7,14 +7,14 @@
 | Kriterium                    | erreichte Punkte / maximale Punkte |
 | ---------------------------- | ---------------------------------- |
 | Funktionalität der API       | 25 / 25                            |
-| DB-Persistenz                | 3 / 3                             |
-| Funktionalität des Frontends | 22_ / 22                            |
-| Usability                    | 4 / 5                             |
-| Design-Qualität              | 5 / 5                             |
-| Code-Qualität                | 5 / 5                             |
-| Repository und README        | 5 / 5                             |
+| DB-Persistenz                | 3 / 3                              |
+| Funktionalität des Frontends | 22_ / 22                           |
+| Usability                    | 4 / 5                              |
+| Design-Qualität              | 5 / 5                              |
+| Code-Qualität                | 5 / 5                              |
+| Repository und README        | 5 / 5                              |
 | **Summe**:                   | 69 / 70                            |
-| **Note**:                    |                                    |
+| **Note**:                    | 1.0                                |
 
 
 ## Funktionalität der API (__ / 25)
