@@ -20,6 +20,13 @@ The code for the exercises is organized as follows:
     - `npm install`
     - `npm run dev`
 
+---
+
+![create-assignee](frontend/src/assets/screenshots/create-assignee.png) 
+![assignee-view](frontend/src/assets/screenshots/assignee-view.png)
+![create-todo](frontend/src/assets/screenshots/create-todo.png)
+![todo-view](frontend/src/assets/screenshots/todo-view.png)
+
 ## Student Information
 
 - **Name**: Deniz Altunkapan  
