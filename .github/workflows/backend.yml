@@ -21,7 +21,11 @@ jobs:
           java-version: 21
 
       - name: Build with Maven
-        run: mvn clean install
+        run: |
+          cd api
+          mvn clean install
 
       - name: Run backend
-        run: mvn spring-boot:run &
+        run: |
+          cd api
+          mvn spring-boot:run &
