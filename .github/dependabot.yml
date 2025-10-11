@@ -7,6 +7,10 @@ updates:
     open-pull-requests-limit: 5
     commit-message:
       prefix: "chore"
+    groups:
+      all:
+        patterns:
+          - "*"
 
   - package-ecosystem: "maven"
     directory: "/api"
@@ -15,3 +19,7 @@ updates:
     open-pull-requests-limit: 5
     commit-message:
       prefix: "chore"
+    groups:
+      all:
+        patterns:
+          - "*"
